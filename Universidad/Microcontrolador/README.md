@@ -1,7 +1,9 @@
 # **Diseño y simulación de un malacate ascensor con Arduino uno y pantalla OLED de 128X64.**
 
 **Se trata de diseñar y simular un malacate ascensor, con Arduino UNO y pantalla OLED SSD1306:**
-*• Para censar el paso de la cabina por cada piso, se utilizará un sensor de efecto Hall.
+
+*
+• Para censar el paso de la cabina por cada piso, se utilizará un sensor de efecto Hall.
 • Se supone que en cada piso hay un imán y que el sensor Hall, se mueve con la cabina.
 • La construcción donde estará el malacate, será solo de 10 pisos, (se considera que el malacate, está en el piso cero).
 • Para elegir el piso donde se desea subir, se cuenta con nueve (9), pulsadores (ver figura de la página anterior).
