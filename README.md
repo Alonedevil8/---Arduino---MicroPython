@@ -1,2 +1,4 @@
-# Arduino
-Repositorio de todos los proyectos y actividades desarrolladas en vida académica y laboral.
+# **Arduino**
+![arduino logo](https://drive.google.com/file/d/1NbUXJDsOgf9CVYx_tVHXsE1qBBrt03s6/view?usp=sharing "arduino logo")
+
+Repositorio creado para gestionar todos los archivos 
