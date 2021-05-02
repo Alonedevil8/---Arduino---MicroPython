@@ -1,16 +1,11 @@
 # **Conversión A/D, PWM, y Protocolo de comunicaciones One Wire con Sensor de temperatura DS18B20**
 
-**Se trata de diseñar y simular un malacate ascensor, con Arduino UNO y pantalla OLED SSD1306:**
+* En un solo programa, se deben medir todas las variables (Intensidad de luz en porcentaje, RPM del motor DC, temperatura entregada por el DS18B20), además de manipular la velocidad de giro del motor DC, mediante un potenciómetro conectado a uno de los pines análogos del Arduino.
 
-* Para censar el paso de la cabina por cada piso, se utilizará un sensor de efecto Hall 3144.
-* Se supone que en cada piso hay un imán y que el sensor Hall, se mueve con la cabina.
-* La construcción donde estará el malacate, será solo de 10 pisos, (se considera que el malacate, está en el piso cero).
-* Para elegir el piso donde se desea subir, se cuenta con nueve (9), pulsadores (ver figura de la página anterior).
-* Una vez elegido el piso donde se quiere que llegue el ascensor, se deberá arrancar el motor (prender led motor), y esperar que el sensor Hall, cense el imán de cada piso.
-Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que representa el motor) y abrir la puerta: encendiendo el led que representa la puerta, esto durante un segundo.
-* Cuando el ascensor llegue al piso cero, se debe apagar el motor que mueve la cabina y abrir la puerta.
-* El sistema solo permite elegir un piso por cada viaje.
-* Se supone que solo hay un imán por cada piso, por lo tanto, este se debe usar para censar tanto las subida como la bajada.*
+*El valor numérico de las tres variables mencionadas, se debe mostrar en la pantalla OLED.
+
+*Además del valor numérico, en la OLED, se deben mostrar el valor de las RPM, en un círculo con una aguja dinámica, como simulando un medidor analógico.
+
 
 ## Sensores y Actuadores:
 
