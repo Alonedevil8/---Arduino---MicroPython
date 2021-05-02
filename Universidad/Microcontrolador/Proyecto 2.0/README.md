@@ -8,13 +8,7 @@
 ## Sensores y Actuadores:
 
 ### Oled 1306
-![](https://ph0en1x.net/uploads/Image/news/raspberry-pi/oled-display-ssd1306-128x64px-i2c.jpg)
-
-![](https://i.stack.imgur.com/scay0.jpg)
-
 
 ### Efecto Hall 3144
 
-![](https://cdn.electronilab.co/wp-content/uploads/2020/10/Fotoresistencia-LDR-5-mm-5528.png)
-
-![](https://www.sunrom.com/media/content/157/a3144-pinout.jpg)
+![](https://www.didacticaselectronicas.com/images/stories/virtuemart/product/Fotorresistencia_522b633f71798.jpg)
