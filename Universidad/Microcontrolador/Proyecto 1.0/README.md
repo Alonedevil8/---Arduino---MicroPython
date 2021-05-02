@@ -13,3 +13,5 @@ Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que
 * Se supone que solo hay un imán por cada piso, por lo tanto, este se debe usar para censar tanto las subida como la bajada.*
 
 ## Sensores y Actuadores:
+
+![](https://i.stack.imgur.com/scay0.jpg)
