@@ -18,3 +18,6 @@ Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que
 ![](https://ph0en1x.net/uploads/Image/news/raspberry-pi/oled-display-ssd1306-128x64px-i2c.jpg)
 
 ![](https://i.stack.imgur.com/scay0.jpg)
+
+
+###efecto Hall 3144
