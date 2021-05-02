@@ -4,12 +4,12 @@
 
 ####Index
                 
-1 Universidad:
++ Universidad:
     + Item B 1
     + ITM: Microcontroladores
     
-2 Profesional:
++ Profesional:
     + None
 
-3 Creativo:
-    * None
++ Creativo:
+    + None
