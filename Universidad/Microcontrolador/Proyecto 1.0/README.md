@@ -21,3 +21,7 @@ Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que
 
 
 ### Efecto Hall 3144
+
+![](https://www.compelelectronica.com/wp-content/uploads/Sensores-magn%C3%A9ticos-de-efecto-hall-3144-SENHALL-copia.jpg)
+
+![](https://www.sunrom.com/media/content/157/a3144-pinout.jpg)
