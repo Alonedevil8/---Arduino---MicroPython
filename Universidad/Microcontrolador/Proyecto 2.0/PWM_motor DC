@@ -1,0 +1,31 @@
+int val_volt = 0;
+int val_volt_map = 0;
+float volt;
+
+const int motor = 5;
+
+
+void setup() 
+{
+pinMode(motor,OUTPUT);
+Serial.begin(9600);
+}
+
+void loop() {
+  
+delay (1500);
+
+val_volt = analogRead(A0);  
+
+Serial.print("__Voltage: ");
+volt = ((float)val_volt*5.0)/1023.0;
+Serial.print(volt);
+
+val_volt_map = map(val_volt,0,1023,0,100); 
+Serial.print("__Voltage mapa: ");
+Serial.print(val_volt_map);
+Serial.print("%");
+
+analogWrite(motor, val_volt/4);
+
+}
