@@ -1,0 +1,22 @@
+// LDR 55XX
+
+const int foto = A0;
+int valor_foto = 0;
+int valor_mapeo_foto = 0;
+
+void setup() {
+  // put your setup code here, to run once
+  pinMode(foto, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  valor_foto = analogRead(foto);
+  valor_mapeo_foto = map (valor_foto, 780, 1, 0, 100);
+
+  Serial.print("__porcentaje de Luz: ");
+  Serial.print(valor_mapeo_foto);
+  Serial.print("%");
+  delay(2000);
+  
+}
