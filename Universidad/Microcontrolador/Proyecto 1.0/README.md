@@ -20,4 +20,4 @@ Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que
 ![](https://i.stack.imgur.com/scay0.jpg)
 
 
-###efecto Hall 3144
+### Efecto Hall 3144
