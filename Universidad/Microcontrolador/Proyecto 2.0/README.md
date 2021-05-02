@@ -9,6 +9,6 @@
 
 ### Oled 1306
 
-### Efecto Hall 3144
+### LDR 55XX
 
 ![](https://www.didacticaselectronicas.com/images/stories/virtuemart/product/Fotorresistencia_522b633f71798.jpg)
