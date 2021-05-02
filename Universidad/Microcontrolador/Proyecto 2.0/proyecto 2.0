@@ -1,1 +1,169 @@
-xxx
+#include <OLED_I2C.h>//libreria necesaria para el control de la pantala OLED
+int pos=0; //posicion en X del medidor, cambiando este valor lo corremos a la derecha o la izquierda siendo 0 lo mas a la izquierda posible
+//Ahora viene el medio circulo del medidor
+
+float radio=60;// radio del circulo...cambiandolo el medidor quedara mas grande o mas chico
+float xcentro=radio; //  X del centro del circulo que sera el medidor
+const float ycentro=60;// Y del centro del circulo ... como es un medio circulo la coordenada Y se quedara lo mas abajo posible ya que solo se vera el medio circulo de arriba
+float radiochico=2;//radio del circulito chico donde se apoya la aguja del medidor
+// Ahora la aguja del medidor...es un segmento de recta donde un vertice es fijo (el centro del circulo del medidor) y el otro varia
+
+float xrecta;// X del otro extremo del segmento de recta el cual se calculara
+float yrecta;// Y del otro extremo del segmento de recta el cual se calculara
+float theta;// angulo que se movera la aguja del medidor segun el valor de la entrada analogica
+
+const float pi=3.1415927;// el numero pi para pasar angulos de grados a radianes
+
+OLED  myOLED(SDA, SCL, 8);// inicializamos la pantalla OLED
+
+extern uint8_t SmallFont[];// Selecciono el tamaño de fuente para los textos
+extern uint8_t MediumNumbers[];// Selecciono el tamaño de fuente para los numeros
+
+//___________________________________________________________________________________________
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+ 
+Adafruit_SSD1306 display(4);
+ 
+float value=0;
+float rev=0;
+int rpm,count=0;
+int oldtime=0;
+int time;
+
+//___________________________________________________________________________________________
+const int foto = A1;
+int valor_foto = 0;
+int valor_mapeo_foto = 0;
+
+//___________________________________________________________________________________________
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#define DATO 9
+
+OneWire ourWire (DATO);
+DallasTemperature sensors (&ourWire);
+
+//___________________________________________________________________________________________
+float val_volt = 0;
+float volt;
+const int motor = 5;
+
+int val_volt_map = 0;
+
+//___________________________________________________________________________________________
+
+
+//======================================================================
+void isr() //interrupt service routine
+{
+rev++;
+count++;
+}
+
+//======================================================================
+ 
+void setup()
+{ 
+  myOLED.begin();//inicializa el display OLED
+  // Ahora damos un mensaje de inicio del programa
+  myOLED.setFont(SmallFont);//seteo el tamaño de la fuente
+  myOLED.print("MEDIDOR ANALOGICO", CENTER, 0);//imprime la frase entre comillas
+  myOLED.update();// actualiza la pantalla
+  delay(1000);
+  myOLED.clrScr(); // borra la pantalla
+//___________________________________________________________________________________________
+  pinMode(foto, INPUT);
+//___________________________________________________________________________________________
+sensors.begin();
+//___________________________________________________________________________________________
+pinMode(motor,OUTPUT);
+//___________________________________________________________________________________________
+
+}
+
+//======================================================================
+ 
+void loop () 
+{
+
+valor_foto = analogRead(foto);
+valor_mapeo_foto = map (valor_foto, 800, 10, 20, 100);
+// ___________________________________________________________________________________________
+
+delay(1000);
+detachInterrupt(0);           //detaches the interrupt
+time=millis()-oldtime;        //finds the time 
+rpm=(rev/time)*60000;         //calculates rpm
+oldtime=millis();             //saves the current time
+rev=0;
+ 
+attachInterrupt(0,isr,RISING);
+// ___________________________________________________________________________________________
+sensors.requestTemperatures();
+
+float x = sensors.getTempCByIndex (0);
+int b = x;
+
+// ___________________________________________________________________________________________
+val_volt = analogRead(A0);  
+volt = ((float)val_volt*5.0)/1023.0;
+val_volt_map = map(val_volt,0,1023,0,100); 
+
+analogWrite(motor, val_volt/4);
+
+// ___________________________________________________________________________________________
+
+ 
+float a= rpm;
+  
+  theta=(a/2.84722-360)*pi/360;// el 2,84722 es para pasar valores de 0 a 1025 (lo que mide una entrada analogica) a grados y el resto de la ecuación convierte en radianes
+  myOLED.drawCircle(xcentro+pos,ycentro,radio);//Dibuja un circulo cuyo centro esta en las coordenadas x e y y su radio es r (x,y,r), este es el medidor 
+  myOLED.drawCircle(xcentro+pos,ycentro,radiochico);//Dibuja el circulito donde se apoya la aguja del medidor 
+  // ahora viene el segmento de recta que seria la aguja del medidor, un extremo es fijo (el centro del circulo) el otro varia segun:
+  
+  xrecta=radio*cos(theta)+xcentro;
+  yrecta=radio*sin(theta)+ycentro;
+  
+  myOLED.drawLine(xcentro+pos,ycentro,xrecta+pos,yrecta+pos);// dibuja una recta entre (X0,Y0) y (X1,Y1) seteando (X0,Y0,X1,Y1)
+  // dibuja la aguja
+  myOLED.drawLine(xcentro-4*radio/5+pos,ycentro,xcentro-radio+pos,ycentro);
+  // ahora las marcas de graduacion del medidor 1
+  myOLED.drawLine(xcentro+pos,ycentro-4*radio/5,xcentro+pos,ycentro-radio);  
+  // ahora las marcas de graduacion del medidor 3
+  myOLED.drawLine(xcentro+4*radio/5+pos,ycentro,xcentro+radio+pos,ycentro);
+  // ahora las marcas de graduacion del medidor  5
+  myOLED.drawLine(12,20,22,28);  
+  // ahora las marcas de graduacion del medidor 2
+  myOLED.drawLine(110,20,98,30);
+  // ahora las marcas de graduacion del medidor 4
+  
+  myOLED.setFont(SmallFont);//seteo el tamaño de la fuente para el siguiente texto
+
+  myOLED.print("rpm: ",32,20); 
+  myOLED.printNumI(a,60,20);// imprime el valor de la entrada analogica
+  
+  myOLED.print("luz%: ",32,29); 
+  myOLED.printNumI(valor_mapeo_foto,60,29);// imprime la frase que esta entre comillas (texto,x ,y)
+  
+  myOLED.print("temp: ",30,38); 
+  myOLED.printNumI(b,65,38);// imprime el valor de la entrada analogica
+
+  myOLED.print("volt: ",28,47); 
+  myOLED.printNumI(volt,57,47);// imprime el valor de la entrada analogica
+  myOLED.print("-> ",66,47);// imprime el valor de la entrada analogica
+  myOLED.printNumI(val_volt_map,81,47);// imprime el valor de la entrada analogica
+  myOLED.print("%",94,47); 
+  
+  myOLED.print("0",15,57);// imprime la frase que esta entre comillas
+  myOLED.print("256",0,24);// imprime la frase que esta entre comillas 
+  myOLED.print("512",40,2);// imprime la frase que esta entre comillas 
+  myOLED.print("768",85,18);// imprime la frase que esta entre comillas 
+  myOLED.print("1024",80,57);// imprime la frase que esta entre comillas 
+
+  myOLED.update();//actualiza la pantalla
+  delay(100);// mide datos cada 100 milisegundos
+  myOLED.clrScr(); //borra la pantalla para reiniciar el loop
+  }
+ //======================================================================
