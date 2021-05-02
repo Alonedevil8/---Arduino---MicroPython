@@ -15,6 +15,6 @@
 
 ### Efecto Hall 3144
 
-![](https://www.compelelectronica.com/wp-content/uploads/Sensores-magn%C3%A9ticos-de-efecto-hall-3144-SENHALL-copia.jpg)
+![](https://cdn.electronilab.co/wp-content/uploads/2020/10/Fotoresistencia-LDR-5-mm-5528.png)
 
 ![](https://www.sunrom.com/media/content/157/a3144-pinout.jpg)
