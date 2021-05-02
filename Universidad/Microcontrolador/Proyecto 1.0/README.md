@@ -14,4 +14,6 @@ Cuando se llegue al piso indicado, se deberá parar la cabina (apagar el led que
 
 ## Sensores y Actuadores:
 
+### Oled 1306
+
 ![](https://i.stack.imgur.com/scay0.jpg)
