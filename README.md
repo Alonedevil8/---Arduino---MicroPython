@@ -2,7 +2,7 @@
 
 > Repositorio creado para gestionar todos los archivos de arduino para el ambiente Academico, Profesional y creativo.
 
-*Index:**
+**Index:**
                 
 + 1. Universidad:
 
