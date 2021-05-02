@@ -7,7 +7,9 @@
 
 ## Sensores y Actuadores:
 
-### Oled 1306
+### DS18B20 (temperatura Dig)
+
+![](https://ae01.alicdn.com/kf/H3fba0561f1fc40e9b25f1184bc3de373L/DS18B20-RS485-RS232-TTL-Com-UART-Temperatura-de-adquisici-n-de-Modbus-RTU-para-Arduino-PC.jpg_q50.jpg)
 
 ### LDR 55XX
 
