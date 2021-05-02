@@ -1,4 +1,4 @@
-# **Diseño y simulación de un malacate ascensor con Arduino uno y pantalla OLED de 128X64.**
+# **Conversión A/D, PWM, y Protocolo de comunicaciones One Wire con Sensor de temperatura DS18B20**
 
 **Se trata de diseñar y simular un malacate ascensor, con Arduino UNO y pantalla OLED SSD1306:**
 
