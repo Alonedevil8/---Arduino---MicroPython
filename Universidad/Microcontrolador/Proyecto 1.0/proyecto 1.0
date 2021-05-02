@@ -1,1 +1,173 @@
+// Presentado por: Andres Felipe Melendez Dorado
+// grupo Noche
+
+#include <Wire.h>      // libreria para bus I2C
+#include <SPI.h>
+#include <Adafruit_SSD1306.h>   // libreria para controlador SSD1306
+#include <Adafruit_GFX.h>   // libreria para pantallas graficas
+
+const int pulsos = 5;   // Lectura sensor por el pi 5 
+#define ANCHO 128       // 128 columnas
+#define ALTO 64         // 64 filas
+#define OLED_RESET 4    // necesario por la libreria pero no usado
+Adafruit_SSD1306 oled(ANCHO, ALTO, &Wire, OLED_RESET);  // crea objeto para la OLED SSD1306
+
+int conta = 0;     // Variable donde se almacenará el conteo de los pulsos
+int tope;     // Valor tope, hasta donde llegará el contador  
+int sensor_HALL;   // Variable donde se almacenará la lectura del sensor Hall
+
+//===========================================================================================  
+void setup() {
+
+  pinMode (3, INPUT); // piso 1
+  pinMode (6, INPUT); // piso 2
+  pinMode (7, INPUT); // piso 3
+  pinMode (8, INPUT); // piso 4
+  pinMode (9, INPUT); // piso 5
+  pinMode (10, INPUT); // piso 6
+  pinMode (11, INPUT); // piso 7
+  pinMode (12, INPUT); // piso 8
+  pinMode (13, INPUT); // piso 9 
+  
+  pinMode (2, OUTPUT); // MOTOR
+  pinMode(A3, OUTPUT); // puerta
+//_____________________________________________________
+  Wire.begin();           // inicializa bus I2C
+  oled.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Inicia la pantalla con la direeción en el bus I2C
+  oled.clearDisplay();    // Borra la pantalla
+  oled.setTextColor(SSD1306_WHITE);  // Pantalla a un solo color
+  pinMode(pulsos, INPUT); // El pin (5)pulsos, configurado como entrada
+  mostrar_conta_up();        // Llama función para mostrar el valor inicial del contador
+}
+
+//===========================================================================================  
+void loop() {
+
+  if (digitalRead(3) == HIGH){tope = 1;}
+  if (digitalRead(6) == HIGH){tope = 2;}
+  if (digitalRead(7) == HIGH){tope = 3;}
+  if (digitalRead(8) == HIGH){tope = 4;}
+  if (digitalRead(9) == HIGH){tope = 5;}
+  if (digitalRead(10) == HIGH){tope = 6;}
+  if (digitalRead(11) == HIGH){tope = 7;}
+  if (digitalRead(12) == HIGH){tope = 8;}
+  if (digitalRead(13) == HIGH){tope = 9;}
+
+// incremento 
+  fa: sensor_HALL = digitalRead(pulsos); // Lee el estado del sensor
+
+  if(sensor_HALL == HIGH)      // El sensor está en alto?
+          {
+           digitalWrite(2,HIGH);
+           delay(1000);
+           digitalWrite(2,LOW);
+           }
+//______________________________________________________________________________________
+        if(sensor_HALL == HIGH)      // El sensor está en alto?
+          {
+           conta++;                   // Incrementa en uno el contador
+      
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+           if(conta == tope)       // El contador llegó al tope?
+            { 
+             mostrar_conta_up();
+             digitalWrite(2,LOW);
+             digitalWrite(A3, HIGH); // Abrir puerta
+             delay(1000); // esperar 1s
+             digitalWrite(A3, LOW); // cerrar puerta
+             
+// Decremento
+             fi: sensor_HALL = digitalRead(pulsos); // Lee el estado del sensor
+             delay(200); 
+             if(sensor_HALL == HIGH)      // El sensor está en alto?
+              {
+               digitalWrite(2,HIGH);
+               delay(1000); 
+               digitalWrite(2,LOW);   
+               conta--; 
+               
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                if(conta == 0)       // El contador llegó al piso 0?
+                  {
+                    
+                  mostrar_conta_down();       // Llama función para mostrar el valor del contador
+                              
+                  digitalWrite(A3, HIGH); // Abrir puerta
+                  delay(1000); // esperar 1s
+                  digitalWrite(A3, LOW); // cerrar puerta
+                  goto fin;
+                  }
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              }
+             delay(200);            // Retardo para el rebote
+             mostrar_conta_down();       // Llama función para mostrar el valor del contador
+             
+             while(true)
+             {
+              sensor_HALL = digitalRead(pulsos);  // Lee el pin de entrada de pulsos
+              if(sensor_HALL == LOW) // Espera que el sensor se reestablesca
+               {
+                delay(100);       // Retardo para el rebote
+                goto fi;          // Retorna a una nueva lectura
+                }
+              }             
+             }
+                  
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+              
+            delay(200);            // Retardo para el rebote
+            mostrar_conta_up();       // Llama función para mostrar el valor del contador
+      
+            while(true)
+              {
+               sensor_HALL = digitalRead(pulsos);  // Lee el pin de entrada de pulsos
+               if(sensor_HALL == LOW) // Espera que el sensor se reestablesca
+                {
+                 delay(100);       // Retardo para el rebote
+                 goto fa;          // Retorna a una nueva lectura
+                 }
+              }
+          }
+//______________________________________________________________________________________
+  fin: digitalWrite(2,LOW);
+  delay(1000);
+}
+
+//===========================================================================================  
+  void mostrar_conta_down()     // Función para mostrar en pantalla el valor del contador
+  {
+      oled.clearDisplay();       // limpia pantalla
+      oled.setTextColor(WHITE);   // establece color al unico disponible (pantalla monocromo)
+      oled.fillRect(10, 10, 20, 30, WHITE); // dibuja rectangulo
+      oled.fillTriangle(0, 40, 20, 55, 38, 40, SSD1306_WHITE); // Dibuja el triangulo 
+                    
+      oled.setTextSize(2);      // establece tamano de texto en 2
+      oled.setCursor(50, 0);   // ubica cursor en coordenadas 35,10 
+      oled.print("PISO N");      // escribe en pantalla el texto
+      
+      oled.setCursor (80,30);   // ubica cursor en coordenas 44,30
+      oled.setTextSize(3);      // establece tamano de texto en 3
+      oled.print(conta);        // Muestra en pantalla el valor del contador
+      
+      oled.display();           // Actualiza pantalla
+  }
+
+    void mostrar_conta_up()     // Función para mostrar en pantalla el valor del contador
+  {
+      oled.clearDisplay();       // limpia pantalla
+      oled.setTextColor(WHITE);   // establece color al unico disponible (pantalla monocromo)
+      oled.fillRect(10, 32, 20, 30, WHITE); // dibuja rectangulo
+      oled.fillTriangle(0, 32, 20, 15, 38, 32, SSD1306_WHITE); // Dibuja el triangulo 
+         
+      oled.setTextSize(2);      // establece tamano de texto en 2
+      oled.setCursor(50, 0);   // ubica cursor en coordenadas 35,10 
+      oled.print("PISO N");      // escribe en pantalla el texto
+      
+      oled.setCursor (80,30);   // ubica cursor en coordenas 44,30
+      oled.setTextSize(3);      // establece tamano de texto en 3
+      oled.print(conta);        // Muestra en pantalla el valor del contador
+      
+      oled.display();           // Actualiza pantalla
+  }
 
