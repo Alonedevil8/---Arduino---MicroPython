@@ -6,9 +6,6 @@
 **Index:**           
 + Universidad:
     + ITM: Microcontroladores
-+ Profesional:
-    + None
-+ Creativo:
-    + None
+
 
 
